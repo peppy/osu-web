@@ -1,0 +1,1010 @@
+{
+    "variables": [],
+    "info": {
+        "name": "osu!web API",
+        "_postman_id": "1a5db1e8-7a23-43a7-8802-ffa8f646ec65",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Chat",
+            "description": "",
+            "item": [
+                {
+                    "name": "Create New PM",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/new",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"target_id\": 12,\n    \"message\": \"culpa\",\n    \"is_action\": false\n}"
+                        },
+                        "description": "This endpoint allows you to create a new PM channel.\n\n---\n\n### Response Format\n\nField            | Type\n---------------- | -----------------\nnew_channel_id   | `channel_id` of newly created [ChatChannel](#chatchannel)\npresence         | array of [ChatChannel](#chatchannel)\nmessage          | the sent [ChatMessage](#chatmessage)\n\n<aside class=\"notice\">\n  This endpoint will only allow the creation of PMs initially, group chat support will come later.\n<\/aside>",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Get Updates",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/updates?since=culpa&channel_id=culpa&limit=12",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "This endpoint returns new messages since the given `message_id` along with updated channel 'presence' data.\n\n---\n\n### Response Format\n\nField            | Type\n---------------- | -----------------\npresence         | array of [ChatChannel](#chatchannel)\nmessages         | array of [ChatMessage](#chatmessage)\n\n<aside class=\"notice\">\n  Note that this returns messages for all channels the user has joined.\n<\/aside>",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Get Channel Messages",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/channels\/{channel}\/messages?channel_id=culpa&limit=12",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "This endpoint returns the chat messages for a specific channel.\n\n---\n\n### Response Format\n\nReturns an array of [ChatMessage](#chatmessage)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Send Message to Channel",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/channels\/{channel}\/messages?channel_id=culpa",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"message\": \"culpa\",\n    \"is_action\": false\n}"
+                        },
+                        "description": "This endpoint returns the chat messages for a specific channel.\n\n---\n\n### Response Format\n\nThe sent [ChatMessage](#chatmessage)\n\n<aside class=\"notice\">\n  When sending a message, the <code>last_read_id<\/code> for the <a href='#chatchannel'>ChatChannel<\/a> is also updated to mark the new message as read.\n<\/aside>",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Join Channel",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/channels\/{channel}\/users\/{user}",
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "This endpoint allows you to join a public channel.\n\n---\n\n### Response Format\n\nReturns the joined [ChatChannel](#chatchannel).\n\n<aside class=\"notice\">\n  This endpoint will only allow the joining of public channels initially.\n<\/aside>",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Leave Channel",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/channels\/{channel}\/users\/{user}",
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "This endpoint allows you to leave a public channel.\n\n---\n\n### Response Format\n\n_empty response_\n\n<aside class=\"notice\">\n  This endpoint will only allow the leaving of public channels initially.\n<\/aside>",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Mark Channel as Read",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/channels\/{channel}\/mark-as-read\/{message}?channel_id=culpa&message_id=culpa",
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "This endpoint marks the channel as having being read up to the given `message_id`.\n\n---\n\n### Response Format\n\n_empty response_\n\n<aside class=\"notice\">\n  Note that the read marker cannot be moved backwards - i.e. if a channel has been marked as read up to <code>message_id = 12<\/code>, you cannot then set it backwards to <code>message_id = 10<\/code>. It will be rejected.\n<\/aside>",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Get Channel List",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/channels",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "This endpoint returns a list of all joinable public channels.\n\n---\n\n### Response Format\n\nReturns an array of [ChatChannel](#chatchannel)",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Comments",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get Comments",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/comments?commentable_type=culpa&commentable_id=culpa&cursor=culpa&parent_id=culpa&sort=culpa",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Returns a list comments and their replies up to 2 levels deep.\n\n---\n\n### Response Format\n\nReturns [CommentBundle](#commentbundle).\n\n`pinned_comments` is only included when `commentable_type` and `commentable_id` are specified.",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Post a new comment",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/comments?comment.commentable_id=culpa&comment.commentable_type=culpa&comment.message=culpa&comment.parent_id=culpa",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Posts a new comment to a comment thread.\n\n---\n\n### Response Format\n\nReturns [CommentBundle](#commentbundle)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Get a Comment",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/comments\/{comment}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Gets a comment and its replies up to 2 levels deep.\n\n---\n\n### Response Format\n\nReturns [CommentBundle](#commentbundle)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Edit Comment",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/comments\/{comment}?comment.message=culpa",
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Edit an existing comment.\n\n---\n\n### Response Format\n\nReturns [CommentBundle](#commentbundle)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Delete Comment",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/comments\/{comment}",
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Deletes the specified comment.\n\n---\n\n### Response Format\n\nReturns [CommentBundle](#commentbundle)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Add Comment vote",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/comments\/{comment}\/vote",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Upvotes a comment.\n\n---\n\n### Response Format\n\nReturns [CommentBundle](#commentbundle)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Remove Comment vote",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/comments\/{comment}\/vote",
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Un-upvotes a comment.\n\n---\n\n### Response Format\n\nReturns [CommentBundle](#commentbundle)",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Notification",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get Notifications",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/notifications?max_id=culpa",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "This endpoint returns a list of the user's unread notifications. Sorted descending by `id` with limit of 50.\n\n---\n\n### Response Format\n\nReturns an object containing [Notification](#notification) and other related attributes.\n\nField                 | Type\n--------------------- | ---------------------------------------------------\nhas_more              | boolean whether or not there are more notifications\nnotifications         | array of [Notification](#notification)\nunread_count          | total unread notifications\nnotification_endpoint | url to connect to websocket server",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Mark Notifications as Read",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/notifications\/mark-read",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"ids\": \"[1, 2, 3]\"\n}"
+                        },
+                        "description": "This endpoint allows you to mark notifications read.\n\n---\n\n### Response Format\n\n_empty response_",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Ranking",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get Ranking",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rankings\/{mode}\/{type}?spotlight=culpa",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Gets the current ranking for the specified type and game mode.\n\n---\n\n### Response Format\n\nReturns [Ranking Response](#ranking-response)\n\n### Route Parameters\n\nField  | Status   | Type\n-------| ---------| -----------------\nmode   | required | [GameMode](#gamemode)\ntype   | required | [RankingType](#rankingtype)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Get Spotlights",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/spotlights",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Gets the list of spotlights.\n\n---\n\n### Response Format\n\nReturns [Spotlight Response](#spotlight-response)",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Undocumented",
+            "description": "",
+            "item": [
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/{beatmapset}\/favourites",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/{beatmapset}\/favourites",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/discussions\/review",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/discussions\/review",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/chat\/presence",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/chat\/presence",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/changelog\/{stream}\/{build}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/changelog\/{stream}\/{build}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/changelog",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/changelog",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/changelog\/{changelog}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/changelog\/{changelog}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/rooms\/{mode?}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rooms\/{mode?}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/users\/{user}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/users\/{user}",
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/users\/{user}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/users\/{user}",
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/leaderboard",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/leaderboard",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/playlist\/{playlist}\/scores",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/playlist\/{playlist}\/scores",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/playlist\/{playlist}\/scores\/{score}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}\/playlist\/{playlist}\/scores\/{score}",
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/reports",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/reports",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/rooms",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rooms",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/rooms\/{room}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/seasonal-backgrounds",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/seasonal-backgrounds",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/scores\/{mode}\/{score}\/download",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/scores\/{mode}\/{score}\/download",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmaps\/{id}\/scores",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmaps\/{id}\/scores",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmaps\/lookup",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmaps\/lookup",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmaps\/{beatmap}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmaps\/{beatmap}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/search\/{filters?}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/search\/{filters?}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/lookup",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/lookup",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/{beatmapset}\/download",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/{beatmapset}\/download",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/{beatmapset}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/beatmapsets\/{beatmapset}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/friends",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/friends",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/me\/{mode?}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/me\/{mode?}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/me\/download-quota-check",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/me\/download-quota-check",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/kudosu",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/kudosu",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/scores\/{type}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/scores\/{type}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/beatmapsets\/{type}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/beatmapsets\/{type}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/recent_activity",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/recent_activity",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/{mode?}",
+                    "request": {
+                        "url": "http:\/\/localhost:8080\/api\/v2\/users\/{user}\/{mode?}",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                }
+            ]
+        }
+    ]
+}
