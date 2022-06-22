@@ -222,6 +222,7 @@ return [
 
         /* Override default migrate:fresh */
         App\Providers\MigrationServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*
